@@ -15,10 +15,10 @@ const AuthLayout = ({ formTitle, children }: AuthLayoutProps) => {
           <h1 className="text-[28px] leading-tight font-bold text-[#2B2B2B] mb-8">
             Welcome to
             <br />
-            Olage Limited
+            Olarge Limited
           </h1>
 
-          {/* Mascot illustration slot — replace with the actual brand asset */}
+         
           <div className="w-[220px] h-[240px] flex items-end">
             <img
               src={authImg}
