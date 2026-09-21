@@ -16,6 +16,8 @@ export interface CreateCategoryDto {
   isActive?: boolean;
 }
 
+export type UpdateCategoryDto = Partial<CreateCategoryDto>;
+
 export interface CategoryQueryParams {
   includeInactive?: boolean;
 }

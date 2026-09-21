@@ -1,10 +1,16 @@
 import api from "./api";
-import type { Category, CreateCategoryDto, CategoryQueryParams } from "../types/category";
+import type {
+  Category,
+  CreateCategoryDto,
+  UpdateCategoryDto,
+  CategoryQueryParams,
+} from "../types/category";
 
 export const categoryService = {
   /**
-   * Fetch all active (or all if includeInactive=true) categories
-   * GET /products/categories
+   * List all active produce categories (or all if includeInactive=true)
+   * GET /products/categories?includeInactive=true|false
+   * Requires: x-api-key
    */
   async getCategories(params?: CategoryQueryParams): Promise<Category[]> {
     const response = await api.get("/products/categories", {
@@ -24,8 +30,9 @@ export const categoryService = {
   },
 
   /**
-   * Fetch a single category by ID
+   * Get single category by MongoDB ID
    * GET /products/categories/:id
+   * Requires: x-api-key
    */
   async getCategoryById(id: string): Promise<Category> {
     const response = await api.get(`/products/categories/${id}`);
@@ -34,8 +41,10 @@ export const categoryService = {
   },
 
   /**
-   * Create a new category
+   * Create a new agricultural product category
    * POST /products/categories
+   * Body: { name, description?, image?, isActive? }
+   * Requires: Admin JWT token + x-api-key
    */
   async createCategory(dto: CreateCategoryDto): Promise<Category> {
     const response = await api.post("/products/categories", dto);
@@ -44,8 +53,21 @@ export const categoryService = {
   },
 
   /**
-   * Delete a category
+   * Update an existing agricultural product category
+   * PATCH /products/categories/:id
+   * Body: { name?, description?, image?, isActive? }
+   * Requires: Admin JWT token + x-api-key
+   */
+  async updateCategory(id: string, dto: UpdateCategoryDto): Promise<Category> {
+    const response = await api.patch(`/products/categories/${id}`, dto);
+    const resData = response.data?.data ?? response.data;
+    return resData?.category ?? resData;
+  },
+
+  /**
+   * Delete an agricultural produce category if no products are linked
    * DELETE /products/categories/:id
+   * Requires: Admin JWT token + x-api-key
    */
   async deleteCategory(id: string): Promise<boolean> {
     const response = await api.delete(`/products/categories/${id}`);

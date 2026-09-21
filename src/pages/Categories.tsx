@@ -14,6 +14,7 @@ import {
   FolderOpen,
   Eye,
   Trash2,
+  Pencil,
 } from "lucide-react";
 import Wrapper from "../components/Wrapper";
 import AddCategoryModal from "../components/AddCategoryModal";
@@ -29,6 +30,7 @@ const Categories: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
+  const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
@@ -88,8 +90,14 @@ const Categories: React.FC = () => {
     };
   }, []);
 
-  const handleCategoryCreated = (newCategory: Category) => {
-    setCategories((prev) => [newCategory, ...prev]);
+  const handleCategorySaved = (savedCategory: Category) => {
+    setCategories((prev) => {
+      const exists = prev.some((c) => c._id === savedCategory._id);
+      if (exists) {
+        return prev.map((c) => (c._id === savedCategory._id ? savedCategory : c));
+      }
+      return [savedCategory, ...prev];
+    });
   };
 
   const confirmDeleteCategory = async () => {
@@ -434,6 +442,17 @@ const Categories: React.FC = () => {
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
+                          setCategoryToEdit(cat);
+                        }}
+                        className="text-gray-600 hover:text-gray-900 p-1 hover:bg-gray-100 rounded transition-colors cursor-pointer"
+                        title="Edit category"
+                      >
+                        <Pencil size={13} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setCategoryToDelete(cat);
                         }}
                         className="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded transition-colors cursor-pointer"
@@ -531,6 +550,14 @@ const Categories: React.FC = () => {
                           </button>
                           <button
                             type="button"
+                            onClick={() => setCategoryToEdit(cat)}
+                            className="inline-flex items-center p-1.5 rounded-md text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+                            title="Edit category"
+                          >
+                            <Pencil size={13} />
+                          </button>
+                          <button
+                            type="button"
                             onClick={() => setCategoryToDelete(cat)}
                             className="inline-flex items-center p-1.5 rounded-md text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors cursor-pointer"
                             title="Delete category"
@@ -548,11 +575,15 @@ const Categories: React.FC = () => {
         )}
       </section>
 
-      {/* Add Category Modal */}
+      {/* Add / Edit Category Modal */}
       <AddCategoryModal
-        open={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onCategoryCreated={handleCategoryCreated}
+        open={isAddModalOpen || !!categoryToEdit}
+        categoryToEdit={categoryToEdit}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setCategoryToEdit(null);
+        }}
+        onCategorySaved={handleCategorySaved}
       />
 
       {/* View Category Details by ID Modal */}
@@ -560,6 +591,7 @@ const Categories: React.FC = () => {
         categoryId={selectedCategoryId}
         open={!!selectedCategoryId}
         onClose={() => setSelectedCategoryId(null)}
+        onEdit={(cat) => setCategoryToEdit(cat)}
         onDelete={(id) => {
           const cat = categories.find((c) => c._id === id);
           if (cat) setCategoryToDelete(cat);

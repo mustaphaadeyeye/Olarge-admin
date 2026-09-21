@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X, AlertCircle, Loader2 } from "lucide-react";
 import categoryService from "../services/category.service";
-import type { Category, CreateCategoryDto } from "../types/category";
+import type { Category, CreateCategoryDto, UpdateCategoryDto } from "../types/category";
 
 interface AddCategoryModalProps {
   open: boolean;
   onClose: () => void;
-  onCategoryCreated: (category: Category) => void;
+  onCategoryCreated?: (category: Category) => void;
+  onCategorySaved?: (category: Category) => void;
+  categoryToEdit?: Category | null;
 }
 
 const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   open,
   onClose,
   onCategoryCreated,
+  onCategorySaved,
+  categoryToEdit,
 }) => {
+  const isEditing = Boolean(categoryToEdit);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
@@ -21,6 +26,23 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [imgError, setImgError] = useState(false);
+
+  // Sync state when editing or opening
+  useEffect(() => {
+    if (categoryToEdit) {
+      setName(categoryToEdit.name || "");
+      setDescription(categoryToEdit.description || "");
+      setImage(categoryToEdit.image || "");
+      setIsActive(categoryToEdit.isActive ?? true);
+    } else {
+      setName("");
+      setDescription("");
+      setImage("");
+      setIsActive(true);
+    }
+    setError(null);
+    setImgError(false);
+  }, [categoryToEdit, open]);
 
   if (!open) return null;
 
@@ -35,29 +57,58 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
     setError(null);
 
     try {
-      const payload: CreateCategoryDto = {
-        name: name.trim(),
-        description: description.trim() || undefined,
-        image: image.trim() || undefined,
-        isActive,
-      };
+      if (isEditing && categoryToEdit) {
+        const updatePayload: UpdateCategoryDto = {
+          name: name.trim(),
+          description: description.trim() || undefined,
+          image: image.trim() || undefined,
+          isActive,
+        };
 
-      const newCategory = await categoryService.createCategory(payload);
-      // Reset form
-      setName("");
-      setDescription("");
-      setImage("");
-      setIsActive(true);
-      setImgError(false);
+        const updatedCategory = await categoryService.updateCategory(
+          categoryToEdit._id,
+          updatePayload
+        );
 
-      onCategoryCreated(newCategory);
-      onClose();
+        if (onCategorySaved) onCategorySaved(updatedCategory);
+        if (onCategoryCreated) onCategoryCreated(updatedCategory);
+        onClose();
+      } else {
+        const createPayload: CreateCategoryDto = {
+          name: name.trim(),
+          description: description.trim() || undefined,
+          image: image.trim() || undefined,
+          isActive,
+        };
+
+        const newCategory = await categoryService.createCategory(createPayload);
+
+        // Reset form
+        setName("");
+        setDescription("");
+        setImage("");
+        setIsActive(true);
+        setImgError(false);
+
+        if (onCategorySaved) onCategorySaved(newCategory);
+        if (onCategoryCreated) onCategoryCreated(newCategory);
+        onClose();
+      }
     } catch (err: unknown) {
-      let msg = "Failed to create category. Please try again.";
+      let msg = isEditing
+        ? "Failed to update category. Please try again."
+        : "Failed to create category. Please try again.";
+
       if (typeof err === "object" && err !== null && "response" in err) {
-        const axiosErr = err as { response?: { data?: { message?: string } } };
+        const axiosErr = err as {
+          response?: { status?: number; data?: { message?: string } };
+        };
         if (axiosErr.response?.data?.message) {
           msg = axiosErr.response.data.message;
+        } else if (axiosErr.response?.status === 409) {
+          msg = "Category with this name already exists.";
+        } else if (axiosErr.response?.status === 403) {
+          msg = "Forbidden - Admin role required or invalid API key.";
         }
       } else if (err instanceof Error) {
         msg = err.message;
@@ -80,14 +131,20 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div>
-            <h2 className="text-lg font-semibold text-[#2B2B2B]">Add New Category</h2>
-            <p className="text-xs text-[#8A8A8A]">Create an agricultural produce category</p>
+            <h2 className="text-lg font-semibold text-[#2B2B2B]">
+              {isEditing ? "Edit Category" : "Add New Category"}
+            </h2>
+            <p className="text-xs text-[#8A8A8A]">
+              {isEditing
+                ? "Update agricultural produce category details"
+                : "Create an agricultural produce category"}
+            </p>
           </div>
           <button
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+            className="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
           >
             <X size={18} />
           </button>
@@ -194,17 +251,23 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50 cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium text-white bg-[#2F7A3D] hover:bg-[#256331] transition-colors shadow-xs disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium text-white bg-[#2F7A3D] hover:bg-[#256331] transition-colors shadow-xs disabled:opacity-50 cursor-pointer"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
-              <span>{loading ? "Saving..." : "Create Category"}</span>
+              <span>
+                {loading
+                  ? "Saving..."
+                  : isEditing
+                  ? "Update Category"
+                  : "Create Category"}
+              </span>
             </button>
           </div>
         </form>

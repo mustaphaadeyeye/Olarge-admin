@@ -8,6 +8,7 @@ import {
   Loader2,
   AlertCircle,
   Trash2,
+  Pencil,
 } from "lucide-react";
 import categoryService from "../services/category.service";
 import type { Category } from "../types/category";
@@ -17,6 +18,7 @@ interface CategoryDetailsModalProps {
   open: boolean;
   onClose: () => void;
   onDelete?: (categoryId: string) => void;
+  onEdit?: (category: Category) => void;
 }
 
 const CategoryDetailsModal: React.FC<CategoryDetailsModalProps> = ({
@@ -24,6 +26,7 @@ const CategoryDetailsModal: React.FC<CategoryDetailsModalProps> = ({
   open,
   onClose,
   onDelete,
+  onEdit,
 }) => {
   const navigate = useNavigate();
   const [category, setCategory] = useState<Category | null>(null);
@@ -34,6 +37,8 @@ const CategoryDetailsModal: React.FC<CategoryDetailsModalProps> = ({
     if (!open || !categoryId) return;
 
     let ignore = false;
+    setLoading(true);
+    setError(null);
 
     categoryService
       .getCategoryById(categoryId)
@@ -89,13 +94,12 @@ const CategoryDetailsModal: React.FC<CategoryDetailsModalProps> = ({
             </span>
             <div>
               <h2 className="text-base font-semibold text-gray-900">Category Details</h2>
-              <p className="text-[11px] text-gray-500">GET /products/categories/:id</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+            className="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
           >
             <X size={18} />
           </button>
@@ -204,7 +208,7 @@ const CategoryDetailsModal: React.FC<CategoryDetailsModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
             >
               Close
             </button>
@@ -222,14 +226,29 @@ const CategoryDetailsModal: React.FC<CategoryDetailsModalProps> = ({
               </button>
             )}
           </div>
-          <button
-            type="button"
-            onClick={handleViewProducts}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium text-white bg-[#2F7A3D] hover:bg-[#256331] transition-colors shadow-xs"
-          >
-            <span>View Products</span>
-            <ExternalLink size={13} />
-          </button>
+          <div className="flex items-center gap-2">
+            {category && onEdit && (
+              <button
+                type="button"
+                onClick={() => {
+                  onEdit(category);
+                  onClose();
+                }}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
+              >
+                <Pencil size={13} />
+                <span>Edit</span>
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={handleViewProducts}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-[#2F7A3D] hover:bg-[#256331] transition-colors shadow-xs cursor-pointer"
+            >
+              <span>View Products</span>
+              <ExternalLink size={13} />
+            </button>
+          </div>
         </div>
       </div>
     </div>
