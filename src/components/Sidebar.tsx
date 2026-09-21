@@ -1,7 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   ShoppingBag,
+  Layers,
   Package,
   Wallet,
   Star,
@@ -11,6 +12,7 @@ import {
   LogOut,
   type LucideIcon,
 } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 interface NavItem {
   label: string;
@@ -19,8 +21,9 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", icon: LayoutDashboard, path: "/" },
+  { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
   { label: "Product", icon: ShoppingBag, path: "/product" },
+  { label: "Categories", icon: Layers, path: "/categories" },
   { label: "Orders", icon: Package, path: "/orders" },
   { label: "Earnings", icon: Wallet, path: "/earnings" },
   { label: "Reviews", icon: Star, path: "/reviews" },
@@ -36,10 +39,24 @@ interface SidebarProps {
 }
 
 const Sidebar = ({
-  userName = "Ope",
+  userName,
   avatarUrl,
   onLogout,
 }: SidebarProps) => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const displayName = userName || user?.name || "Admin";
+  const displayAvatar = avatarUrl || user?.avatar;
+
+  const handleLogout = () => {
+    if (onLogout) {
+      onLogout();
+    } else {
+      logout();
+      navigate("/login");
+    }
+  };
   return (
     <aside
       className="
@@ -64,21 +81,21 @@ const Sidebar = ({
       {/* Profile */}
       <div className="flex flex-col items-center mb-9">
         <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/30 bg-white/10 shadow-sm">
-          {avatarUrl ? (
+          {displayAvatar ? (
             <img
-              src={avatarUrl}
-              alt={userName}
+              src={displayAvatar}
+              alt={displayName}
               className="w-full h-full object-cover"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-white text-xl font-semibold">
-              {userName.charAt(0).toUpperCase()}
+              {displayName.charAt(0).toUpperCase()}
             </div>
           )}
         </div>
 
         <p className="mt-3 text-white text-sm font-medium">
-          Hello {userName}
+          Hello {displayName}
         </p>
       </div>
 
@@ -126,7 +143,7 @@ const Sidebar = ({
       <div className="pt-4 mt-4 border-t border-white/10">
         <button
           type="button"
-          onClick={onLogout}
+          onClick={handleLogout}
           className="
             w-full flex items-center gap-3
             px-4 py-3

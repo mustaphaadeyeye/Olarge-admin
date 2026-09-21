@@ -79,7 +79,7 @@ const RevenueTrendChart = () => {
             />
             <Tooltip
               cursor={{ fill: "#E9F6EA" }}
-              formatter={(value: number) => [`$${value.toLocaleString()}`, "Revenue"]}
+              formatter={(value: any) => [`$${Number(value || 0).toLocaleString()}`, "Revenue"]}
               contentStyle={{ borderRadius: 8, border: "1px solid #EEEEEE", fontSize: 12 }}
             />
             <Bar dataKey="revenue" fill="#5B5B5B" radius={[3, 3, 0, 0]} maxBarSize={30} />

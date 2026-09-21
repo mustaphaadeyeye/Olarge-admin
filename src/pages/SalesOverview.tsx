@@ -73,7 +73,7 @@ const SalesOverview = () => {
             />
             <Tooltip
               cursor={{ fill: "#F5FAF6" }}
-              formatter={(value: number) => [`$${value.toLocaleString()}`, "Sales"]}
+              formatter={(value: any) => [`$${Number(value || 0).toLocaleString()}`, "Sales"]}
               contentStyle={{
                 borderRadius: 8,
                 border: "1px solid #EEEEEE",

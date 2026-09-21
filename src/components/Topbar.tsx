@@ -4,6 +4,7 @@ import {
   Mail,
   PhoneCall,
 } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 interface TopbarProps {
   userName?: string;
@@ -12,10 +13,15 @@ interface TopbarProps {
 }
 
 const Topbar = ({
-  userName = "Ope John",
-  email = "opejohn@gmail.com",
+  userName,
+  email,
   avatarUrl,
 }: TopbarProps) => {
+  const { user } = useAuth();
+
+  const displayName = userName || user?.name || "Admin";
+  const displayEmail = email || user?.email || "admin@olage.ng";
+  const displayAvatar = avatarUrl || user?.avatar;
   return (
     <header className="fixed top-0 right-0 left-60 z-50 w-auto h-[72px] bg-white border-b border-[#E6EEE8] flex items-center justify-between px-5 sm:px-6 lg:px-8">
 
@@ -75,26 +81,26 @@ const Topbar = ({
         {/* Profile */}
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-full overflow-hidden bg-[#E5EDE7] shrink-0">
-            {avatarUrl ? (
+            {displayAvatar ? (
               <img
-                src={avatarUrl}
-                alt={userName}
+                src={displayAvatar}
+                alt={displayName}
                 className="w-full h-full object-cover"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-[#2F7A3D] font-semibold text-sm">
-                {userName.charAt(0).toUpperCase()}
+                {displayName.charAt(0).toUpperCase()}
               </div>
             )}
           </div>
 
           <div className="hidden sm:block leading-tight">
             <p className="text-sm font-medium text-[#222]">
-              {userName}
+              {displayName}
             </p>
 
             <p className="text-[11px] text-[#777] mt-0.5">
-              {email}
+              {displayEmail}
             </p>
           </div>
         </div>
