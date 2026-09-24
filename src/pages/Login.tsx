@@ -196,16 +196,22 @@ const Login: React.FC = () => {
           )}
         </button>
 
-        <p className="text-center text-sm text-[#555] pt-1">
-          Don't have an account?{" "}
-          <button
-            type="button"
-            onClick={() => navigate("/signup")}
-            className="text-[#F2A100] font-medium hover:underline cursor-pointer"
-          >
-            Sign up
-          </button>
-        </p>
+        <div className="pt-2 text-center space-y-1.5">
+          <p className="text-xs text-gray-600">
+            Looking for seller registration?{" "}
+            <button
+              type="button"
+              onClick={() => navigate("/signup")}
+              className="text-[#F2762E] font-semibold hover:underline cursor-pointer inline-flex items-center gap-1"
+            >
+              <span>Seller Onboarding</span>
+              <span className="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-full font-medium">Coming Soon</span>
+            </button>
+          </p>
+          <p className="text-[11px] text-gray-400">
+            Product catalog posting is currently restricted to authorized administrators.
+          </p>
+        </div>
       </form>
 
       <SocialLoginRow />
