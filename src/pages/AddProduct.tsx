@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
-  ChevronRight,
   Loader2,
   AlertCircle,
   Package,
@@ -287,19 +286,6 @@ const AddProduct: React.FC = () => {
               />
             </button>
             <div>
-              <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-0.5">
-                <button
-                  type="button"
-                  onClick={() => navigate("/product")}
-                  className="text-[#2F7A3D] font-medium hover:underline cursor-pointer"
-                >
-                  Product Catalog
-                </button>
-                <ChevronRight size={13} className="text-gray-400" />
-                <span className="text-gray-600 font-medium">
-                  {isEditMode ? "Edit Product" : "Add New Product"}
-                </span>
-              </div>
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
                 {isEditMode ? "Edit Product Listing" : "Create New Product Listing"}
               </h1>

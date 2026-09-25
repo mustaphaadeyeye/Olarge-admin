@@ -59,6 +59,49 @@ export const authService = {
   isAuthenticated(): boolean {
     return !!this.getToken();
   },
+
+  /**
+   * Verify email with 6-digit OTP code
+   */
+  async verifyEmail(email: string, code: string): Promise<ApiResponse<unknown>> {
+    const response = await api.post<ApiResponse<unknown>>("/auth/verify-email", {
+      email,
+      code,
+    });
+    return response.data;
+  },
+
+  /**
+   * Resend verification email/code
+   */
+  async resendVerificationCode(email: string): Promise<ApiResponse<unknown>> {
+    const response = await api.post<ApiResponse<unknown>>("/auth/resend-verification", {
+      email,
+    });
+    return response.data;
+  },
+
+  /**
+   * Request password reset code
+   */
+  async forgotPassword(email: string): Promise<ApiResponse<unknown>> {
+    const response = await api.post<ApiResponse<unknown>>("/auth/forgot-password", {
+      email,
+    });
+    return response.data;
+  },
+
+  /**
+   * Reset password with verification code
+   */
+  async resetPassword(data: {
+    email: string;
+    code: string;
+    newPassword: string;
+  }): Promise<ApiResponse<unknown>> {
+    const response = await api.post<ApiResponse<unknown>>("/auth/reset-password", data);
+    return response.data;
+  },
 };
 
 export default authService;

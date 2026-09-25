@@ -15,6 +15,8 @@ import Settings from "./pages/Settings";
 import OrderHistory from "./pages/OrderHistory";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import VerifyEmail from "./pages/VerifyEmail";
+import ForgotPassword from "./pages/ForgotPassword";
 import RegisterFlow from "./pages/RegisterFlow";
 
 const App = () => {
@@ -25,6 +27,8 @@ const App = () => {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register/business" element={<RegisterFlow />} />
 
         {/* Protected Dashboard routes */}

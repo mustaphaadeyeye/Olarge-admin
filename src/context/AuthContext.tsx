@@ -15,6 +15,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (credentials: LoginCredentials) => Promise<AuthResponseData>;
   logout: () => void;
+  updateUser: (updatedUser: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -67,6 +68,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
+  
+  const updateUser = (updatedUser: Partial<User>) => {
+    setUser((prev) => {
+      if (!prev) return null;
+      const merged = { ...prev, ...updatedUser };
+      try {
+        localStorage.setItem("olarge_admin_user", JSON.stringify(merged));
+      } catch (e) {
+        console.error("Failed to update user in localStorage", e);
+      }
+      return merged;
+    });
+  };
+
   const logout = () => {
     authService.clearSession();
     setUser(null);
@@ -82,6 +97,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isLoading,
         login,
         logout,
+        updateUser,
       }}
     >
       {children}

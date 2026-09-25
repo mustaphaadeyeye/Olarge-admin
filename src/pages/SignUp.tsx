@@ -25,8 +25,15 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <AuthLayout formTitle="Seller Registration">
-      <div className="space-y-5">
+    <AuthLayout
+      showTabs={true}
+      activeTab="signup"
+      title="Seller Registration"
+      subtitle="Direct seller accounts are currently invitation-only while administrative posting is active."
+      bannerCategory="Seller Onboarding"
+      bannerTitle="Empowering Nigerian farmers and agricultural merchants nationwide."
+    >
+      <div className="space-y-4">
         {/* Status Announcement Banner */}
         <div className="p-4 rounded-xl bg-amber-50/90 border border-amber-200/80 shadow-xs">
           <div className="flex items-start gap-3">
@@ -124,12 +131,11 @@ const SignUp: React.FC = () => {
             onClick={() => navigate("/login")}
             className="
               w-full h-11
-              bg-[#F2762E] hover:bg-[#E0651E]
+              bg-[#2F7A3D] hover:bg-[#256331]
               text-white text-sm font-semibold
               rounded-md
-              transition-all cursor-pointer
+              transition-colors cursor-pointer
               flex items-center justify-center gap-2
-              shadow-xs hover:shadow-sm
             "
           >
             <span>Proceed to Admin Sign In</span>

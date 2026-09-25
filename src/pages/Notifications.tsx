@@ -17,7 +17,7 @@ const notifications: NotificationItem[] = [
 
 const Notifications = () => {
   return (
-    <div className="bg-white rounded-lg border border-[#EEEEEE] shadow-[0_2px_8px_rgba(0,0,0,0.08)] px-5 py-5">
+    <div className="bg-white rounded-lg border border-[#EEEEEE] shadow-[0_2px_8px_rgba(0,0,0,0.08)] px-3.5 sm:px-5 py-4 sm:py-5">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>

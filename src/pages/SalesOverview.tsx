@@ -26,14 +26,14 @@ const SalesOverview = () => {
   const [active, setActive] = useState<Period>("Weekly");
 
   return (
-    <div className="bg-white rounded-lg border border-[#EEEEEE] shadow-[0_2px_8px_rgba(0,0,0,0.08)] px-5 py-5">
+    <div className="bg-white rounded-lg border border-[#EEEEEE] shadow-[0_2px_8px_rgba(0,0,0,0.08)] px-3.5 sm:px-5 py-4 sm:py-5">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5 gap-3">
         <h2 className="text-base font-semibold text-[#2B2B2B]">
           Sales Overview
         </h2>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-3 sm:gap-5 overflow-x-auto pb-1 sm:pb-0">
           {periods.map((period) => (
             <button
               key={period}

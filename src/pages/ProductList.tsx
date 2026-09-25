@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ChevronRight,
   Plus,
   Pencil,
   Trash2,
@@ -213,17 +212,6 @@ const ProductList: React.FC = () => {
         {/* Header Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
-              <button
-                type="button"
-                onClick={() => navigate("/dashboard")}
-                className="text-[#2F7A3D] font-medium hover:underline cursor-pointer"
-              >
-                Dashboard
-              </button>
-              <ChevronRight size={13} className="text-gray-400" />
-              <span className="text-gray-600 font-medium">Product Catalog</span>
-            </div>
             <div className="flex items-center gap-3">
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
                 Product Catalog

@@ -15,7 +15,7 @@ const products: Product[] = [
 
 const TopSellingProducts = () => {
   return (
-    <div className="bg-white rounded-lg border border-[#EEEEEE] shadow-[0_2px_8px_rgba(0,0,0,0.08)] px-5 py-5">
+    <div className="bg-white rounded-lg border border-[#EEEEEE] shadow-[0_2px_8px_rgba(0,0,0,0.08)] px-3.5 sm:px-5 py-4 sm:py-5">
       <h2 className="text-base font-semibold text-[#2B2B2B] mb-4">
         Top Selling Products
       </h2>

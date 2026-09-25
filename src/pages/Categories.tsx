@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import {
-  ChevronRight,
   Plus,
   Search,
   Layers,
@@ -24,7 +22,6 @@ import categoryService from "../services/category.service";
 import type { Category } from "../types/category";
 
 const Categories: React.FC = () => {
-  const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -145,18 +142,15 @@ const Categories: React.FC = () => {
   return (
     <Wrapper>
       <section className="w-full">
-        {/* Breadcrumb + Add Category Button */}
+        {/* Header Bar + Add Category Button */}
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-          <div className="flex items-center gap-2 text-sm">
-            <button
-              type="button"
-              onClick={() => navigate("/dashboard")}
-              className="text-[#2F7A3D] font-medium hover:underline cursor-pointer"
-            >
-              Dashboard
-            </button>
-            <ChevronRight size={15} className="text-[#B5B5B5]" />
-            <span className="text-[#8A8A8A]">Categories</span>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
+              Categories
+            </h1>
+            <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+              Manage produce categories and classifications
+            </p>
           </div>
 
           <div className="flex items-center gap-2">

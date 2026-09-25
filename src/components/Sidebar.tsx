@@ -10,6 +10,7 @@ import {
   CreditCard,
   Settings,
   LogOut,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -36,12 +37,16 @@ interface SidebarProps {
   userName?: string;
   avatarUrl?: string;
   onLogout?: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 const Sidebar = ({
   userName,
   avatarUrl,
   onLogout,
+  isOpen = false,
+  onClose,
 }: SidebarProps) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -56,27 +61,56 @@ const Sidebar = ({
       logout();
       navigate("/login");
     }
+    if (onClose) onClose();
   };
+
+  const handleNavClick = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
-    <aside
-      className="
-        fixed left-0 top-0 z-40
-        h-screen w-60
-        flex flex-col
-        px-4 py-6
-        overflow-hidden
-      "
-      style={{ backgroundColor: "#2F7A3D" }}
-    >
-      {/* Logo */}
-      <div className="flex items-center justify-center mb-10">
-        <div className="flex items-start">
-          <h1 className="text-white text-2xl font-bold tracking-tight">
-            Olage
-          </h1>
-          <span className="text-white text-xs -mt-1">°</span>
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40 lg:hidden transition-opacity duration-300"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
+
+      <aside
+        className={`
+          fixed left-0 top-0 z-50 lg:z-40
+          h-screen w-64 lg:w-60
+          flex flex-col
+          px-4 py-6
+          overflow-hidden
+          transition-transform duration-300 ease-in-out
+          ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
+        style={{ backgroundColor: "#2F7A3D" }}
+      >
+        {/* Logo & Mobile Close Button */}
+        <div className="flex items-center justify-between mb-8 lg:justify-center">
+          <div className="flex items-start">
+            <h1 className="text-white text-2xl font-bold tracking-tight">
+              Olage
+            </h1>
+            <span className="text-white text-xs -mt-1">°</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close sidebar"
+            className="lg:hidden text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
+          >
+            <X size={22} />
+          </button>
         </div>
-      </div>
 
       {/* Profile */}
       <div className="flex flex-col items-center mb-9">
@@ -106,6 +140,7 @@ const Sidebar = ({
             <NavLink
               key={path}
               to={path}
+              onClick={handleNavClick}
               className={({ isActive }) =>
                 [
                   "relative flex items-center gap-3",
@@ -159,6 +194,7 @@ const Sidebar = ({
         </button>
       </div>
     </aside>
+    </>
   );
 };
 

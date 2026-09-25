@@ -22,7 +22,7 @@ const statusStyles: Record<Order["status"], string> = {
 
 const RecentOrders = () => {
   return (
-    <div className="bg-white rounded-lg border border-[#EEEEEE] shadow-[0_2px_8px_rgba(0,0,0,0.08)] px-5 py-5">
+    <div className="bg-white rounded-lg border border-[#EEEEEE] shadow-[0_2px_8px_rgba(0,0,0,0.08)] px-3.5 sm:px-5 py-4 sm:py-5">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-base font-semibold text-[#2B2B2B]">Recent Orders</h2>
@@ -36,7 +36,7 @@ const RecentOrders = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto -mx-3.5 sm:mx-0 px-3.5 sm:px-0">
         <table className="w-full min-w-[520px] border-collapse">
           <thead>
             <tr className="bg-[#F3F3F3]">
