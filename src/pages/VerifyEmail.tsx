@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSearchParams, useNavigate, Link } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import axios from "axios";
 import AuthLayout from "./AuthLayout";
@@ -12,6 +12,7 @@ const VerifyEmail: React.FC = () => {
 
   const initialEmail = searchParams.get("email") || "";
   const [email, setEmail] = useState(initialEmail);
+  setEmail("")
   const [isEditingEmail, setIsEditingEmail] = useState(!initialEmail);
 
   // 6-digit OTP code state

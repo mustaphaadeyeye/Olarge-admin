@@ -7,11 +7,11 @@ import {
   Package,
   Layers,
   MapPin,
-  Calendar,
+  // Calendar,
   Sparkles,
   Eye,
   CheckCircle2,
-  Info,
+  // Info,
   ExternalLink,
 } from "lucide-react";
 import Wrapper from "../components/Wrapper";

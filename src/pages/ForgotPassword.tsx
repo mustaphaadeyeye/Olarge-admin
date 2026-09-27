@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Loader2, CheckCircle2, AlertCircle, Eye, EyeOff } from "lucide-react";
 import axios from "axios";
 import AuthLayout from "./AuthLayout";
@@ -7,7 +7,7 @@ import authService from "../services/auth.service";
 import type { ApiErrorResponse } from "../types/auth";
 
 const ForgotPassword: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Steps: 'request' | 'reset' | 'completed'
   const [step, setStep] = useState<"request" | "reset" | "completed">("request");

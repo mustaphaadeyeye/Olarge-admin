@@ -7,7 +7,7 @@ import {
   CheckCircle2,
   Clock,
   Store,
-  ArrowLeft,
+  // ArrowLeft,
   Mail,
 } from "lucide-react";
 import AuthLayout from "./AuthLayout";
