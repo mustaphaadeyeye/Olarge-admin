@@ -20,8 +20,6 @@ import {
   MapPin,
   Star,
   CheckCircle2,
-  // SlidersHorizontal,
-  // ArrowUpDown,
   Layers,
 } from "lucide-react";
 import Wrapper from "../components/Wrapper";

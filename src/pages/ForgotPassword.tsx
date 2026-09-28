@@ -7,8 +7,6 @@ import authService from "../services/auth.service";
 import type { ApiErrorResponse } from "../types/auth";
 
 const ForgotPassword: React.FC = () => {
-  // const navigate = useNavigate();
-
   // Steps: 'request' | 'reset' | 'completed'
   const [step, setStep] = useState<"request" | "reset" | "completed">("request");
 

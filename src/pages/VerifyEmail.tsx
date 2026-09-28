@@ -12,7 +12,6 @@ const VerifyEmail: React.FC = () => {
 
   const initialEmail = searchParams.get("email") || "";
   const [email, setEmail] = useState(initialEmail);
-  setEmail("")
   const [isEditingEmail, setIsEditingEmail] = useState(!initialEmail);
 
   // 6-digit OTP code state
@@ -189,7 +188,7 @@ const VerifyEmail: React.FC = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Optional Email Edit Row */}
-        {/* {(!initialEmail || isEditingEmail) && (
+        {(!initialEmail || isEditingEmail) && (
           <div className="space-y-1.5">
             <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider">
               Verification Email
@@ -203,7 +202,7 @@ const VerifyEmail: React.FC = () => {
               className="w-full h-10 px-3.5 rounded-md border border-gray-300 bg-white text-sm text-gray-900 placeholder:text-gray-400 outline-none focus:border-[#2F7A3D] transition-colors"
             />
           </div>
-        )} */}
+        )}
 
         {initialEmail && !isEditingEmail && (
           <div className="flex items-center justify-between text-xs text-gray-500 bg-gray-50 px-3 py-2 rounded-md border border-gray-200">

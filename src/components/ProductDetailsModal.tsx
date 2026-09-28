@@ -7,7 +7,6 @@ import {
   Calendar,
   Pencil,
   Trash2,
-  // ExternalLink,
   Star,
   CheckCircle2,
   AlertTriangle,
